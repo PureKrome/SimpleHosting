@@ -24,7 +24,7 @@
 ## Key Points
 
 - :rocket: Reduces boilerplate ceremony for your `program.cs` file.
-- :white_check_mark: Sets up Serilog _around_ the entire application.
+- :white_check_mark: Sets up Serilog _around_ the entire application. (:wrench: Configure all settings via your `appsettings.json` file(s))
 - :white_check_mark: Simple to add some extra (helpful) log header/footer.
 - :white_check_mark: Can still easily create a Web Host or BackgroundService Host.
 
