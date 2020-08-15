@@ -1,20 +1,20 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <LangVersion>latest</LangVersion>
     <PackageId>WorldDomination.SimpleHosting</PackageId>
-    <Authors>Homely's developers</Authors>
-    <Company>Homely</Company>
-    <Product>Homely - ASP.NET Core Hosting core application-library.</Product>
-    <Description>An opinionated ASP.NET Core 'Hosting' core application-library is to help reduce the ceremony required in starting a new 'REST' like web application or Background Tasks application. This is intended to replace the boilerplate code in your "Program.cs".</Description>
-    <Copyright>2018</Copyright>
+    <Authors>Pure Krome</Authors>
+    <Company>World Domination Technologies</Company>
+    <Product>Simple : Hosting</Product>
+    <Description>Making it simple to customize Hosting for your .NET Core 3.x+ application</Description>
+    <Copyright>2020</Copyright>
     <OutputType>Library</OutputType>
-    <PackageProjectUrl>https://github.com/Homely/SimpleHosting</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/PureKrome/SimpleHosting</PackageProjectUrl>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    <RepositoryUrl>https://github.com/Homely/SimpleHosting</RepositoryUrl>
+    <RepositoryUrl>https://github.com/PureKrome/SimpleHosting</RepositoryUrl>
     <RepositoryType>.net c# .net-core</RepositoryType>
-    <PackageTags>homely aspnetcore aspnet-core aspnet-core-2 c# hosting</PackageTags> 
+    <PackageTags>netcore aspnetcore aspnet-core aspnet-core-2 c# hosting world-domination unicorn magicalunicorn magical-unicorn</PackageTags> 
 
     <!-- Microsoft.NET.Sdk.Web aren't ment for packaging into dll's. You usually publish a website.
          As such, we need to specify that this is ok to do -->

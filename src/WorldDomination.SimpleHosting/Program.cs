@@ -146,12 +146,12 @@ namespace WorldDomination.SimpleHosting
         {
             var builder =  new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true);
+                .AddJsonFile("appsettings.json", optional: false);
 
             // Check any 'Environment' json files, like appsettings.Development.json.
             // REF: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?#environmentname
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
-                ?? Environment.GetEnvironmentVariable("DOT_ENVIRONMENT")
+                ?? Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")
                 ?? "Production";
 
             return builder
@@ -181,10 +181,9 @@ namespace WorldDomination.SimpleHosting
                 // No custom services provided, so use the default web host.
                 hostBuilder
                     .ConfigureWebHostDefaults(webBuilder =>
-                     {
-                         webBuilder.UseStartup<T>();
-                            //.UseConfiguration(GetConfigurationBuilder(options.EnvironmentVariableKey));
-                     });
+                    {
+                        webBuilder.UseStartup<T>();
+                    });
             }
 
             return hostBuilder;
