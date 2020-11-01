@@ -6,13 +6,14 @@ using Microsoft.Extensions.Logging;
 
 namespace WorldDomination.SimpleHosting.SampleWebApplication
 {
-    public class CustomHostedService : IHostedService
+    public abstract class CustomHostedService : IHostedService
     {
-        private const string _name = "Custom Hosted Service";
+        private readonly string _name;
         private readonly ILogger _logger;
 
-        public CustomHostedService(ILogger<CustomHostedService> logger)
+        public CustomHostedService(string name, ILogger logger)
         {
+            _name = name;
             _logger = logger;
         }
 
@@ -22,18 +23,12 @@ namespace WorldDomination.SimpleHosting.SampleWebApplication
 
             // Just delay for a bit .. then finish.
             // E.g. Doing some Database preparation.
-            _logger.LogInformation(" *** Pretending to do some Database migration or whatever ****");
-
             _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now.ToString());
             await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);
 
-            _logger.LogInformation($"Finishing executing {_name} worker.");
+            _logger.LogInformation($"Finishing StartAsync {_name} worker.");
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            // No Op.
-            return Task.CompletedTask;
-        }
+        public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
     }
 }

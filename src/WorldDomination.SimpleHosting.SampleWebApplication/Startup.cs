@@ -22,7 +22,8 @@ namespace WorldDomination.SimpleHosting.SampleWebApplication
             services.AddControllers();
 
             // Some fake database migration service.
-            services.AddHostedService<CustomHostedService>();
+            services.AddHostedService<HostedService1>();
+            services.AddHostedService<HostedService2>();
 
             // This is a -real- Weather Service.
             services.AddTransient<IWeatherService, WeatherService>();

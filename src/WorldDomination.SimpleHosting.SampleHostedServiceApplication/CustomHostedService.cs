@@ -26,13 +26,9 @@ namespace WorldDomination.SimpleHosting.SampleHostedServiceApplication
             _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now.ToString());
             await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);
 
-            _logger.LogInformation($"Finishing executing {_name} worker.");
+            _logger.LogInformation($"Finishing StartAsync {_name} worker.");
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            // No Op.
-            return Task.CompletedTask;
-        }
+        public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
     }
 }
