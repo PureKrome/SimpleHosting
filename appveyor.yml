@@ -56,7 +56,7 @@ after_test:
       
       if ($env:CONFIGURATION -eq 'Release')
       {
-          dotnet pack src/WorldDomination.SimpleHosting/WorldDomination.SimpleHosting.csproj -c $env:CONFIGURATION --include-symbols -p:SymbolPackageFormat=snupkg /p:Version=$env:APPVEYOR_BUILD_VERSION --no-build
+          dotnet pack -c $env:CONFIGURATION --no-build /p:Version=$env:APPVEYOR_BUILD_VERSION /p:ContinuousIntegrationBuild=true src/WorldDomination.SimpleHosting/WorldDomination.SimpleHosting.csproj
       }
 
 artifacts:
@@ -70,7 +70,7 @@ artifacts:
 deploy:
   - provider: NuGet
     api_key:
-      secure: vyup43MdVw0Av8HKZu6z/daFk03a8aT589utaNHFjCU5zDZzgAM6rkyt/6agZfEh
+      secure: 8EdmbIQFKJXCePp1LFPdA0QoocIaXmLeJeU3LNbvrQ5iROs9hBdKu+3n+94ndxj1
     on:
       branch: master
       APPVEYOR_REPO_TAG: true
