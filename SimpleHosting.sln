@@ -11,6 +11,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorldDomination.SimpleHosti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorldDomination.SimpleHosting.SampleWebApplication.Tests", "src\WorldDomination.SimpleHosting.SampleWebApplication.Tests\WorldDomination.SimpleHosting.SampleWebApplication.Tests.csproj", "{BB527810-A846-43A8-8AD8-A1C2B191C2AE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{3F8381EE-2CFD-4533-8141-5C6EA41E3275}"
+	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+		global.json = global.json
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B77C557B-74CB-457F-AB66-B0BBCF93FA5C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +45,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{112DA850-B52E-49B6-811D-73237C5A7792} = {B77C557B-74CB-457F-AB66-B0BBCF93FA5C}
+		{4AA442D6-5611-408D-9CF2-CCDA63BA21D0} = {B77C557B-74CB-457F-AB66-B0BBCF93FA5C}
+		{013F5235-D334-4770-82E4-350BA00F676C} = {B77C557B-74CB-457F-AB66-B0BBCF93FA5C}
+		{BB527810-A846-43A8-8AD8-A1C2B191C2AE} = {B77C557B-74CB-457F-AB66-B0BBCF93FA5C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D2610FC5-400C-462E-8BEC-028ECC97A1EF}
