@@ -28,13 +28,13 @@ namespace WorldDomination.SimpleHosting.SampleWebApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //_logger.LogInformation("Configuring services XXXXXXX");
+            _logger.LogInformation("Configuring services");
 
             services.AddControllers();
 
-            //// Some fake database migration service.
-            //services.AddHostedService<HostedService1>();
-            //services.AddHostedService<HostedService2>();
+            // Some fake database migration service.
+            services.AddHostedService<HostedService1>();
+            services.AddHostedService<HostedService2>();
 
             // This is a -real- Weather Service.
             services.AddTransient<IWeatherService, WeatherService>();
@@ -43,7 +43,8 @@ namespace WorldDomination.SimpleHosting.SampleWebApplication
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //_logger.LogInformation("Configuring Middleware XXXXXX");
+
+            _logger.LogInformation("Configuring Middleware");
 
             if (env.IsDevelopment())
             {

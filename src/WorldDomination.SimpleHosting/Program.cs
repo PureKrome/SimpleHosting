@@ -190,6 +190,12 @@ namespace WorldDomination.SimpleHosting
                         // (Pro Tip: this is a great way to add logging, to Startup.cs !!! YES!!!! )
                         //webBuilder.UseStartup(c => new TStartup(c));
                         webBuilder.UseStartup(context => options.StartupActivation(context, logger));
+                        
+                        // The startup class (activated, above) will be activated in _this_ assmebly and not the main host/app assembly.
+                        // This means that when things like 'MapControllers' tries to do an assembly scan (the default functionality)
+                        // in the host/app assembly, it will FAIL to find any.
+                        // As such, we actually need to really reset the main ApplicationKey to say it's for the provided startup class.
+                        // Hat tip to: @aarondandy, @buildstarted and @xt0rted
                         var startupAssemblyName = options.StartupActivation.GetMethodInfo().DeclaringType!.GetTypeInfo().Assembly.GetName().Name;
                         webBuilder.UseSetting(WebHostDefaults.ApplicationKey, startupAssemblyName);
                     }
