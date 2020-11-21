@@ -1,7 +1,7 @@
 <h1 align="center">Simple: Hosting</h1>
 
 <div align="center">
-  Making it simple to <i>customize</i> Hosting for your .NET Core 3.x+ application
+  Making it simple to <i>customize</i> Hosting for your .NET Core 5.x+ application
 </div>
 
 <br />
@@ -26,7 +26,7 @@
 - :rocket: Reduces boilerplate ceremony for your `program.cs` file.
 - :white_check_mark: Sets up Serilog _around_ the entire application. (:wrench: Configure all settings via your `appsettings.json` file(s))
 - :white_check_mark: Simple to add some extra (helpful) log header/footer.
-- :white_check_mark: Can still easily create a Web Host or BackgroundService Host.
+- :white_check_mark: Can also add logging to your `Startup` class (new with ASP.NET Core 5+)
 
 In summary: this library makes is <b>SIMPLE</b> (by abstracting away most of the boring ceremony) to setup your .NET Core application.
 
