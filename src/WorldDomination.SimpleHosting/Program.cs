@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -189,6 +190,8 @@ namespace WorldDomination.SimpleHosting
                         // (Pro Tip: this is a great way to add logging, to Startup.cs !!! YES!!!! )
                         //webBuilder.UseStartup(c => new TStartup(c));
                         webBuilder.UseStartup(context => options.StartupActivation(context, logger));
+                        var startupAssemblyName = options.StartupActivation.GetMethodInfo().DeclaringType!.GetTypeInfo().Assembly.GetName().Name;
+                        webBuilder.UseSetting(WebHostDefaults.ApplicationKey, startupAssemblyName);
                     }
                 });
 
