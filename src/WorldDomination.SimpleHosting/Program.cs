@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -7,12 +8,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Core;
+using Serilog.Extensions.Logging;
 
 namespace WorldDomination.SimpleHosting
 {
     public class Program
     {
-        private static readonly string Explosion = @"" + Environment.NewLine +
+        private static readonly string _explosion = @"" + Environment.NewLine +
 "" + Environment.NewLine +
 "" + Environment.NewLine +
 "                             ____" + Environment.NewLine +
@@ -39,14 +41,14 @@ namespace WorldDomination.SimpleHosting
         /// <typeparam name="T">Startup class type.</typeparam>
         /// <param name="args">Optional command line arguments.</param>
         /// <returns>Task of this Main application run.</returns>
-        public static async Task Main<T>(string[] args) where T : class
+        public static async Task Main<TStartup>(string[] args) where TStartup : class
         {
-            var options = new MainOptions
+            var options = new MainOptions<TStartup>
             {
                 CommandLineArguments = args
             };
 
-            await Main<T>(options);
+            await Main(options);
         }
 
         /// <summary>
@@ -55,8 +57,8 @@ namespace WorldDomination.SimpleHosting
         /// <typeparam name="T">Startup class type.</typeparam>
         /// <param name="options">Options to help setup/configure your program.</param>
         /// <returns>Task of this Main application run.</returns>
-        public static async Task Main<T>(MainOptions options) where T : class
-        {
+        public static async Task Main<TStartup>(MainOptions<TStartup> options) where TStartup : class
+        { 
             try
             {
                 if (options is null)
@@ -79,7 +81,7 @@ namespace WorldDomination.SimpleHosting
 
                 if (options.LogAssemblyInformation)
                 {
-                    var assembly = typeof(T).Assembly;
+                    var assembly = typeof(TStartup).Assembly;
                     var assemblyDate = string.IsNullOrWhiteSpace(assembly.Location)
                                            ? "-- unknown --"
                                            : File.GetLastWriteTime(assembly.Location).ToString("u");
@@ -89,10 +91,7 @@ namespace WorldDomination.SimpleHosting
                     Log.Information(assemblyInfo);
                 }
 
-                var host = CreateHostBuilder<T>(options).Build();
-
-                // Execute any pre-run action.
-                options.CustomPreHostRunAsyncAction?.Invoke(host);
+                var host = CreateHostBuilder(options).Build();
 
                 // Ok, now lets go and start!
                 await host.RunAsync();
@@ -106,14 +105,14 @@ namespace WorldDomination.SimpleHosting
                 // So, if we do have a logger created, then use it.
                 if (Log.Logger is Logger)
                 {
-                    // TODO: Add metrics (like Application Insights?) to log telemetry failures.
+                    // TODO: Add metrics (like Application Insights?) to log telemetry failures -IF- Serilog can't do this adequately.
                     Log.Logger.Fatal(exception, errorMessage);
                 }
                 else
                 {
                     // Nope - failed to create a logger and we have a serious error. So lets
                     // just fall back to the Console and _hope_ someone can read/access that.
-                    Console.WriteLine(Explosion);
+                    Console.WriteLine(_explosion);
                     Console.WriteLine(errorMessage);
                     Console.WriteLine();
                     Console.WriteLine();
@@ -142,6 +141,11 @@ namespace WorldDomination.SimpleHosting
             }
         }
 
+        // This is only to help load the SERILOG information.
+        // - appsettings.json
+        // - appsettings.<environment>.json
+        // - environmental variables
+        // Strongly based off/from: https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.hosting.host.createdefaultbuilder?view=dotnet-plat-ext-5.0
         private static IConfiguration GetConfigurationBuilder()
         {
             var builder =  new ConfigurationBuilder()
@@ -150,9 +154,7 @@ namespace WorldDomination.SimpleHosting
 
             // Check any 'Environment' json files, like appsettings.Development.json.
             // REF: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?#environmentname
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
-                ?? Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")
-                ?? "Production";
+            var environment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production";
 
             return builder
                 .AddJsonFile($"appsettings.{environment}.json", optional: true)
@@ -160,31 +162,44 @@ namespace WorldDomination.SimpleHosting
                 .Build();
         }
 
-        public static IHostBuilder CreateHostBuilder<T>(MainOptions options) where T : class
+        public static IHostBuilder CreateHostBuilder<TStartup>(MainOptions<TStartup> options) where TStartup : class
         {
             var hostBuilder = Host
                 .CreateDefaultBuilder(options.CommandLineArguments)
                 .ConfigureLogging((context, logging) =>
                 {
-                    // Don't want any of that crap.
+                    // Don't want any of the default crap.
                     logging.ClearProviders();
                 })
                 .UseSerilog();
 
-            // Do we setup any custom services, like custom hosted services?
-            if (options.ConfigureCustomServices != null)
-            {
-                hostBuilder.ConfigureServices(options.ConfigureCustomServices);
-            }
-            else
-            {
-                // No custom services provided, so use the default web host.
-                hostBuilder
-                    .ConfigureWebHostDefaults(webBuilder =>
+            var logger = new SerilogLoggerProvider(Log.Logger).CreateLogger(nameof(Program));
+
+            hostBuilder
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    if (options.StartupActivation is null)
                     {
-                        webBuilder.UseStartup<T>();
-                    });
-            }
+                        // Normal startup class with default constructor.
+                        webBuilder.UseStartup<TStartup>();
+                    }
+                    else
+                    {
+                        // Use the custom startup activation function, instead.
+                        // REF: https://docs.microsoft.com/en-us/aspnet/core/release-notes/aspnetcore-5.0?view=aspnetcore-5.0#control-startup-class-activation
+                        // (Pro Tip: this is a great way to add logging, to Startup.cs !!! YES!!!! )
+                        //webBuilder.UseStartup(c => new TStartup(c));
+                        webBuilder.UseStartup(context => options.StartupActivation(context, logger));
+                        
+                        // The startup class (activated, above) will be activated in _this_ assmebly and not the main host/app assembly.
+                        // This means that when things like 'MapControllers' tries to do an assembly scan (the default functionality)
+                        // in the host/app assembly, it will FAIL to find any.
+                        // As such, we actually need to really reset the main ApplicationKey to say it's for the provided startup class.
+                        // Hat tip to: @aarondandy, @buildstarted and @xt0rted
+                        var startupAssemblyName = options.StartupActivation.GetMethodInfo().DeclaringType!.GetTypeInfo().Assembly.GetName().Name;
+                        webBuilder.UseSetting(WebHostDefaults.ApplicationKey, startupAssemblyName);
+                    }
+                });
 
             return hostBuilder;
         }

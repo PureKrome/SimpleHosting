@@ -11,7 +11,9 @@ namespace WorldDomination.SimpleHosting.SampleWebApplication.Tests
 {
     public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     {
-        protected override IHostBuilder CreateHostBuilder() => SimpleHosting.Program.CreateHostBuilder<Startup>(new MainOptions());
+        protected override IHostBuilder CreateHostBuilder() => SimpleHosting.Program.CreateHostBuilder(new MainOptions<Startup>());
+
+        public MainOptions<Startup> MainOptions{ get; set; }
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {

@@ -1,4 +1,6 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 using Shouldly;
 using Xunit;
 
@@ -13,9 +15,25 @@ namespace WorldDomination.SimpleHosting.SampleWebApplication.Tests.WeatherForeca
             _factory = factory;
         }
 
-        [Fact]
-        public async Task GivenAValidRequest_Get_ReturnsAnHttpStatus200OK()
+        public static TheoryData<MainOptions<Startup>> Data => new TheoryData<MainOptions<Startup>>
         {
+            { 
+                new MainOptions<Startup>()
+            },
+            {
+                new MainOptions<Startup>
+                {
+                    StartupActivation = new System.Func<WebHostBuilderContext, ILogger, Startup>((context, logger) => new Startup(context.Configuration, logger))
+                }
+            }
+        };
+
+        [Theory]
+        [MemberData(nameof(Data))]
+        public async Task GivenAValidRequest_Get_ReturnsAnHttpStatus200OK(MainOptions<Startup> mainOptions)
+        {
+            _factory.MainOptions = mainOptions;
+
             var client = _factory.CreateClient();
 
             // Act.
