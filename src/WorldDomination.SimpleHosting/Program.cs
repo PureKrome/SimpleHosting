@@ -91,7 +91,7 @@ namespace WorldDomination.SimpleHosting
                     Log.Information(assemblyInfo);
                 }
 
-                var host = CreateHostBuilder(options, Log.Logger).Build();
+                var host = CreateHostBuilder(options).Build();
 
                 // Ok, now lets go and start!
                 await host.RunAsync();
@@ -162,7 +162,7 @@ namespace WorldDomination.SimpleHosting
                 .Build();
         }
 
-        public static IHostBuilder CreateHostBuilder<TStartup>(MainOptions<TStartup> options, Serilog.ILogger serilogLogger) where TStartup : class
+        public static IHostBuilder CreateHostBuilder<TStartup>(MainOptions<TStartup> options) where TStartup : class
         {
             var hostBuilder = Host
                 .CreateDefaultBuilder(options.CommandLineArguments)
@@ -173,7 +173,7 @@ namespace WorldDomination.SimpleHosting
                 })
                 .UseSerilog();
 
-            var logger = new SerilogLoggerProvider(serilogLogger).CreateLogger(nameof(Program));
+            var logger = new SerilogLoggerProvider(Log.Logger).CreateLogger(nameof(Program));
 
             hostBuilder
                 .ConfigureWebHostDefaults(webBuilder =>
