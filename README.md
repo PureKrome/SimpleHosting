@@ -66,16 +66,7 @@ public static Task Main(string[] args)
         FirstLoggingInformationMessage = "~~ Sample Web Application ~~",
         LogAssemblyInformation = true,
         LastLoggingInformationMessage = "-- Sample Web Application has ended/terminated --",
-
-        CustomPreHostRunAsyncAction = new Action<IHost>(host =>
-        {
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogInformation($"Inside the {nameof(MainOptions.CustomPreHostRunAsyncAction)} method. Woot!");
-            }
-        })
+        StartupActivation = new System.Func<WebHostBuilderContext, ILogger, Startup>((context, logger) => new Startup(context.Configuration, logger))
     };
 
     return SimpleHosting.Program.Main<Startup>(options);
