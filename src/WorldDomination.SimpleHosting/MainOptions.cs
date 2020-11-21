@@ -1,10 +1,10 @@
 using System;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace WorldDomination.SimpleHosting
 {
-    public class MainOptions
+    public class MainOptions<TStartup> where TStartup : class
     {
         /// <summary>
         /// Command line arguments.
@@ -27,17 +27,7 @@ namespace WorldDomination.SimpleHosting
         /// </summary>
         /// <remarks>This could be useful to help determine when things are finally stopping.</remarks>
         public string LastLoggingInformationMessage { get; set; }
-
-        /// <summary>
-        /// Custom action to configure your services. This will NOT setup the default web host.
-        /// </summary>
-        /// <remarks>An example of this would be for your own HostedService for doing DB setup/migrations or a Background Task which has no Kestrel server, running.</remarks>
-        public Action<HostBuilderContext, IServiceCollection> ConfigureCustomServices { get; set; }
-
-        /// <summary>
-        /// Custom logic to invoke on the Host that was built, but before the host starts.<br/>
-        /// An example of this could be some database migrations.
-        /// </summary>
-        public Action<IHost> CustomPreHostRunAsyncAction { get; set; }
+    
+        public Func<WebHostBuilderContext, ILogger, TStartup> StartupActivation { get; set; }
     }
 }
