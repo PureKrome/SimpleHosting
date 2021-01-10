@@ -154,7 +154,9 @@ namespace WorldDomination.SimpleHosting
 
             // Check any 'Environment' json files, like appsettings.Development.json.
             // REF: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?#environmentname
-            var environment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production";
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ??
+                Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ??
+                "Production";
 
             return builder
                 .AddJsonFile($"appsettings.{environment}.json", optional: true)
