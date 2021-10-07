@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+  packages: write
+
+env:
+  DOTNET_NOLOGO: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2.3.4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1.8.2
+
+      - run: dotnet build --configuration Release
+
+      - run: dotnet test --configuration Release --no-build
+
+      - run: dotnet pack --configuration Release --output ./artifacts
+
+      - name: Publish artifacts
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          path: ./artifacts/*
+
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: ./artifacts/*
+
+      - name: Publish to GPR
+        run: |
+          dotnet nuget push "./artifacts/*.nupkg" \
+            --no-symbols true \
+            --api-key ${{ secrets.GITHUB_TOKEN }} \
+            --source https://nuget.pkg.github.com/${{ github.repository_owner }}
+
+      - name: Publish to nuget.org
+        run: |
+          dotnet nuget push "./artifacts/*.nupkg" \
+            --api-key ${{ secrets.NUGET_TOKEN }} \
+            --source https://api.nuget.org/v3/index.json
