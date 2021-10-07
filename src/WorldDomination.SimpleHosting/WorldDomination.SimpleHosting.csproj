@@ -12,6 +12,7 @@
     <OutputType>Library</OutputType>
     <PackageProjectUrl>https://github.com/PureKrome/SimpleHosting</PackageProjectUrl>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/PureKrome/SimpleHosting</RepositoryUrl>
     <RepositoryType>.net c# .net-core</RepositoryType>
     <PackageTags>.net dotnet c# netcore aspnetcore aspnet-core hosting world-domination unicorn magicalunicorn magical-unicorn</PackageTags> 
@@ -41,6 +42,10 @@
 
   <ItemGroup>
     <None Include="..\..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="../../README.md">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
