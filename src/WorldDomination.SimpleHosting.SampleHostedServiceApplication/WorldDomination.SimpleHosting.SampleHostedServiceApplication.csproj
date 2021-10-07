@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>dotnet-SampleBackgroundTask-AF705853-E47B-47BB-AECC-3BD0F2F2AA7A</UserSecretsId>
   </PropertyGroup>
 
@@ -12,4 +11,5 @@
   <ItemGroup>
     <ProjectReference Include="..\WorldDomination.SimpleHosting\WorldDomination.SimpleHosting.csproj" />
   </ItemGroup>
+
 </Project>
