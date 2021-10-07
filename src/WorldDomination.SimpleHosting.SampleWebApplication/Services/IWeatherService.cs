@@ -1,10 +1,6 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
+namespace WorldDomination.SimpleHosting.SampleWebApplication.Services;
 
-namespace WorldDomination.SimpleHosting.SampleWebApplication.Services
+public interface IWeatherService
 {
-    public interface IWeatherService
-    {
-        Task<IEnumerable<WeatherForecast>> GetWeatherAsync();
-    }
+    Task<IEnumerable<WeatherForecast>> GetWeatherAsync();
 }

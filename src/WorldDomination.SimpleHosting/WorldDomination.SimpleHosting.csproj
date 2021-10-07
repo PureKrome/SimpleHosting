@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <PackageId>WorldDomination.SimpleHosting</PackageId>
     <Authors>Pure Krome</Authors>
     <Company>World Domination Technologies</Company>
     <Product>Simple : Hosting</Product>
-    <Description>Making it simple to customize Hosting for your .NET Core 5.x+ application</Description>
+    <Description>Making it simple to customize Hosting for your .NET Core 6.x+ application</Description>
     <Copyright>2020</Copyright>
     <OutputType>Library</OutputType>
     <PackageProjectUrl>https://github.com/PureKrome/SimpleHosting</PackageProjectUrl>
@@ -28,6 +28,7 @@
     <PackageIcon>icon.jpg</PackageIcon>
     <PackageIconUrl />
 
+    <ImplicitUsings>true</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>

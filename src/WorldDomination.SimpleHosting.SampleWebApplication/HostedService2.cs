@@ -1,11 +1,8 @@
-using Microsoft.Extensions.Logging;
+namespace WorldDomination.SimpleHosting.SampleWebApplication;
 
-namespace WorldDomination.SimpleHosting.SampleWebApplication
+public class HostedService2 : CustomHostedService
 {
-    public class HostedService2 : CustomHostedService
+    public HostedService2(ILogger<HostedService2> logger) : base("HostedService-2 (e.g. Database migrations)", logger)
     {
-        public HostedService2(ILogger<HostedService2> logger) : base("HostedService-2 (e.g. Database migrations)", logger)
-        {
-        }
     }
 }
