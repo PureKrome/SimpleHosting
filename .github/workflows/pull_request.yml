@@ -40,7 +40,6 @@ jobs:
         if: ${{ matrix.config }} == "debug"
         uses: codecov/codecov-action@v2.1.0
         with:
-          token: "${{ secrets.CODECOV_TOKEN }}"
           directory: "./.codecoverage"
           fail_ci_if_error: true
 
