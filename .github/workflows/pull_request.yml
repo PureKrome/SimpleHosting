@@ -9,6 +9,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        config:
+          - debug
+          - release
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2.3.4
@@ -19,34 +25,27 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v1.8.2
 
-      - run: dotnet build --configuration Release
+      - run: dotnet build --configuration ${{ matrix.config }}
 
-      - run: dotnet test --configuration Release --no-build
+      - run: dotnet test --configuration ${{ matrix.config }} --no-build
+        if: ${{ matrix.config }} == "release"
 
-      - run: dotnet pack --configuration Release --output ./artifacts --version-suffix $VERSION_SUFFIX
+      - run: dotnet test --configuration ${{ matrix.config }} --verbosity minimal --no-build --collect:"XPlat Code Coverage" --results-directory "./.codecoverage"
+        if: ${{ matrix.config }} == "debug"
 
-      - name: Publish artifacts
-        uses: actions/upload-artifact@v2.2.4
-        with:
-          path: ./artifacts/*
-
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2.3.4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v1.8.2
-
-      - run: dotnet build --configuration Debug
-
-      - run: dotnet test --configuration Debug --verbosity minimal --no-build --collect:"XPlat Code Coverage" --results-directory "./.codecoverage"
+      - run: dotnet pack --configuration ${{ matrix.config }} --output ./artifacts --version-suffix $VERSION_SUFFIX
+        if: ${{ matrix.config }} == "release"
 
       - name: Code coverage
+        if: ${{ matrix.config }} == "debug"
         uses: codecov/codecov-action@v2.1.0
         with:
           token: "${{ secrets.CODECOV_TOKEN }}"
           directory: "./.codecoverage"
           fail_ci_if_error: true
+
+      - name: Publish artifacts
+        if: ${{ matrix.config }} == "release"
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          path: ./artifacts/*
