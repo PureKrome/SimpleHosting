@@ -28,23 +28,23 @@ jobs:
       - run: dotnet build --configuration ${{ matrix.config }}
 
       - run: dotnet test --configuration ${{ matrix.config }} --no-build
-        if: ${{ matrix.config }} == "release"
+        if: matrix.config == "release"
 
       - run: dotnet test --configuration ${{ matrix.config }} --verbosity minimal --no-build --collect:"XPlat Code Coverage" --results-directory "./.codecoverage"
-        if: ${{ matrix.config }} == "debug"
+        if: matrix.config == "debug"
 
       - run: dotnet pack --configuration ${{ matrix.config }} --output ./artifacts --version-suffix $VERSION_SUFFIX
-        if: ${{ matrix.config }} == "release"
+        if: matrix.config == "release"
 
       - name: Code coverage
-        if: ${{ matrix.config }} == "debug"
+        if: matrix.config == "debug"
         uses: codecov/codecov-action@v2.1.0
         with:
           directory: "./.codecoverage"
           fail_ci_if_error: true
 
       - name: Publish artifacts
-        if: ${{ matrix.config }} == "release"
+        if: matrix.config == "release"
         uses: actions/upload-artifact@v2.2.4
         with:
           path: ./artifacts/*
