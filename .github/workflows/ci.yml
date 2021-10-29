@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  packages: write
+
+env:
+  DOTNET_NOLOGO: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2.3.4
+
+      - name: Build version suffix
+        run: echo "VERSION_SUFFIX=beta.${{ github.run_number }}" >> $GITHUB_ENV
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1.8.2
+
+      - run: dotnet build --configuration Release
+
+      - run: dotnet test --configuration Release --no-build
+
+      - run: dotnet pack --configuration Release --output ./artifacts --version-suffix $VERSION_SUFFIX
+
+      - name: Publish artifacts
+        uses: actions/upload-artifact@v2.2.4
+        with:
+          path: ./artifacts/*
+
+      - name: Publish to GPR
+        run: |
+          dotnet nuget push "./artifacts/*.nupkg" \
+            --no-symbols true \
+            --api-key ${{ secrets.GITHUB_TOKEN }} \
+            --source https://nuget.pkg.github.com/${{ github.repository_owner }}
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2.3.4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1.8.2
+
+      - run: dotnet build --configuration Debug
+
+      - run: dotnet test --configuration Debug --verbosity minimal --no-build --collect:"XPlat Code Coverage" --results-directory "./.codecoverage"
+
+      - name: Code coverage
+        uses: codecov/codecov-action@v2.1.0
+        with:
+          token: "${{ secrets.CODECOV_TOKEN }}"
+          directory: "./.codecoverage"
+          fail_ci_if_error: true
