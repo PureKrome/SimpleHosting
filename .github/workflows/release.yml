@@ -26,7 +26,7 @@ jobs:
 
       - run: dotnet restore --verbosity minimal
 
-      - run: dotnet build --configuration Release
+      - run: dotnet build --configuration Release /p:ContinuousIntegrationBuild=true
 
       - run: dotnet test --configuration Release --no-build
 
