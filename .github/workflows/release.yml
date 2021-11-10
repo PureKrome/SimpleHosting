@@ -54,4 +54,7 @@ jobs:
             --source https://nuget.pkg.github.com/${{ github.repository_owner }}
 
       - name: Publish to nuget.org
-        run: dotnet nuget push "./artifacts/*.nupkg" --api-key ${{ secrets.NUGET_TOKEN }}
+        run: |
+          dotnet nuget push "./artifacts/*.nupkg"
+            --api-key ${{ secrets.NUGET_TOKEN }}
+            --source https://api.nuget.org/v3/index.json
