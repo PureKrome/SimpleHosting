@@ -25,7 +25,9 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v1.8.2
 
-      - run: dotnet build --configuration ${{ matrix.config }}
+      - run: dotnet restore --verbosity minimal
+
+      - run: dotnet build --configuration ${{ matrix.config }} /p:ContinuousIntegrationBuild=true
 
       - run: dotnet test --configuration ${{ matrix.config }} --no-build
         if: matrix.config == 'release'
@@ -33,7 +35,7 @@ jobs:
       - run: dotnet test --configuration ${{ matrix.config }} --verbosity minimal --no-build --collect:"XPlat Code Coverage" --results-directory "./.codecoverage"
         if: matrix.config == 'debug'
 
-      - run: dotnet pack --configuration ${{ matrix.config }} --output ./artifacts --version-suffix $VERSION_SUFFIX
+      - run: dotnet pack --configuration ${{ matrix.config }} --no-build --output ./artifacts --version-suffix $VERSION_SUFFIX
         if: matrix.config == 'release'
 
       - name: Code coverage

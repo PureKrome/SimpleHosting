@@ -24,11 +24,13 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v1.8.2
 
-      - run: dotnet build --configuration Release
+      - run: dotnet restore --verbosity minimal
+
+      - run: dotnet build --configuration Release /p:ContinuousIntegrationBuild=true
 
       - run: dotnet test --configuration Release --no-build
 
-      - run: dotnet pack --configuration Release --output ./artifacts --version-suffix $VERSION_SUFFIX
+      - run: dotnet pack --configuration Release --no-build --output ./artifacts --version-suffix $VERSION_SUFFIX
 
       - name: Publish artifacts
         uses: actions/upload-artifact@v2.2.4
@@ -51,6 +53,8 @@ jobs:
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v1.8.2
+
+      - run: dotnet restore --verbosity minimal
 
       - run: dotnet build --configuration Debug
 
