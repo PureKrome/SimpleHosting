@@ -34,7 +34,7 @@ jobs:
 
       - run: dotnet test --configuration Release --no-build
 
-      - run: dotnet pack --configuration Release --no-build --output ./artifacts
+      - run: dotnet pack --configuration Release --no-build --output ./artifacts /p:version=${{ env.RELEASE_VERSION }}
 
       - name: Publish artifacts
         uses: actions/upload-artifact@v2.2.4
