@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -16,13 +17,13 @@ namespace WorldDomination.SimpleHosting.SampleWebApplication
 
         public Startup(IConfiguration configuration)
         {
-            _configuration = configuration ?? throw new System.ArgumentNullException(nameof(configuration));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         public Startup(IConfiguration configuration, ILogger logger)
         {
-            _configuration = configuration ?? throw new System.ArgumentNullException(nameof(configuration));
-            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.

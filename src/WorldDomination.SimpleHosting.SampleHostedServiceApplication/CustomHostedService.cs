@@ -19,14 +19,14 @@ namespace WorldDomination.SimpleHosting.SampleHostedServiceApplication
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Starting executing {_name} worker.");
+            _logger.LogInformation("Starting executing {name} worker.", _name);
 
             // Just delay for a bit .. then finish.
             // E.g. Doing some Database preparation.
             _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now.ToString());
             await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);
 
-            _logger.LogInformation($"Finishing StartAsync {_name} worker.");
+            _logger.LogInformation("Finishing StartAsync {name} worker.", _name);
         }
 
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;

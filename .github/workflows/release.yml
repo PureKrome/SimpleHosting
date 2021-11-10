@@ -32,8 +32,6 @@ jobs:
 
       - run: dotnet build --configuration Release /p:ContinuousIntegrationBuild=true /p:version=${{ env.RELEASE_VERSION }}
 
-      - run: dotnet test --configuration Release --no-build
-
       - run: dotnet pack --configuration Release --no-build --output ./artifacts /p:version=${{ env.RELEASE_VERSION }}
 
       - name: Publish artifacts

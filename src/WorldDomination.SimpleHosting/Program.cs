@@ -175,6 +175,11 @@ namespace WorldDomination.SimpleHosting
                 })
                 .UseSerilog();
 
+            if (options.ConfigureCustomServices != null)
+            {
+                hostBuilder.ConfigureServices(options.ConfigureCustomServices);
+            }
+
             var logger = new SerilogLoggerProvider(Log.Logger).CreateLogger(nameof(Program));
 
             hostBuilder

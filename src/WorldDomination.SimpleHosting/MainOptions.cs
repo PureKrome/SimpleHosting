@@ -1,5 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace WorldDomination.SimpleHosting
@@ -27,7 +29,13 @@ namespace WorldDomination.SimpleHosting
         /// </summary>
         /// <remarks>This could be useful to help determine when things are finally stopping.</remarks>
         public string LastLoggingInformationMessage { get; set; }
-    
+
+        /// <summary>
+        /// Adds services to the container. This can be called multiple times and the results will be additive.
+        /// </summary>
+        /// <remarks>This is required for Background Hosted Services, where there is no ConfigureService method to override, such as with a Web host.</remarks>
+        public Action<HostBuilderContext, IServiceCollection> ConfigureCustomServices { get; set; }
+
         public Func<WebHostBuilderContext, ILogger, TStartup> StartupActivation { get; set; }
     }
 }
