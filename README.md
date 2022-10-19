@@ -15,10 +15,6 @@
     <a href="https://www.nuget.org/packages/WorldDomination.SimpleHosting/">
     <img src="https://buildstats.info/nuget/WorldDomination.SimpleHosting" alt="NuGet" />
     </a>
-    <!-- AppVeyor CI -->
-    <a href="https://ci.appveyor.com/api/projects/status/SimpleHosting/branch/master?svg=true">
-    <img src="https://ci.appveyor.com/api/projects/status/011jx778q0h7g2vs?svg=true" alt="AppVeyor-CI" />
-    </a>
 </div>
 
 ## Key Points
