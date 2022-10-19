@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -89,6 +90,16 @@ namespace WorldDomination.SimpleHosting
                     var assemblyInfo = $"Name: {assembly.GetName().Name} | Version: {assembly.GetName().Version} | Date: {assemblyDate}";
 
                     Log.Information(assemblyInfo);
+                }
+
+                if (options.LogFrameworkInformation)
+                {
+                    Log.Information($"Framework: {RuntimeInformation.FrameworkDescription}");
+                }
+
+                if (options.LogOSDesriptionInformation)
+                {
+                    Log.Information($"OS Platform: {RuntimeInformation.OSDescription}");
                 }
 
                 var host = CreateHostBuilder(options).Build();
