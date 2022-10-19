@@ -22,7 +22,20 @@ namespace WorldDomination.SimpleHosting
         /// <summary>
         /// Write the assembly name, version and date information to the logger?
         /// </summary>
+        /// <remarks>Default: true.</remarks>
         public bool LogAssemblyInformation { get; set; } = true;
+
+        /// <summary>
+        /// Write the .NET SDK Framework to the logger?
+        /// </summary>
+        /// <remarks>Default: true.</remarks>
+        public bool LogFrameworkInformation { get; set; } = true;
+
+        /// <summary>
+        /// Write the OS platform to the logger?
+        /// </summary>
+        /// <remarks>Default: true.</remarks>
+        public bool LogOSDesriptionInformation { get; set; } = true;
 
         /// <summary>
         /// Optional text which is last displayed when the application stops.
