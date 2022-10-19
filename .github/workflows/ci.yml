@@ -37,8 +37,11 @@ jobs:
       - name: Publish artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: WorldDomination.SimpleHosting.1.0.0-$VERSION_SUFFIX
+          name: WorldDomination.SimpleHosting.1.0.0-${{ env.VERSION_SUFFIX }}
           path: ./artifacts/
+
+      - name: List contents of the Artifacts directory
+      - run: ls -al ./artifacts
 
       - name: Publish to GPR
         run: |

@@ -37,7 +37,7 @@ jobs:
       - name: Publish artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: WorldDomination.SimpleHosting.1.0.0-$VERSION_SUFFIX
+          name: WorldDomination.SimpleHosting.${{ env.RELEASE_VERSION }}
           path: ./artifacts/
 
       - name: Upload release assets

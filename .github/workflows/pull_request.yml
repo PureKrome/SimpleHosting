@@ -52,5 +52,5 @@ jobs:
         if: matrix.config == 'release'
         uses: actions/upload-artifact@v3
         with:
-          name: WorldDomination.SimpleHosting.1.0.0-$VERSION_SUFFIX
+          name: WorldDomination.SimpleHosting.1.0.0-${{ env.VERSION_SUFFIX }}
           path: ./artifacts/
