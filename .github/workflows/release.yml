@@ -50,7 +50,7 @@ jobs:
       - name: Publish to GPR
         run: |
           dotnet nuget push "./artifacts/*.nupkg" \
-            --no-symbols true \
+            --no-symbols \
             --api-key ${{ secrets.GITHUB_TOKEN }} \
             --source https://nuget.pkg.github.com/${{ github.repository_owner }}
 
